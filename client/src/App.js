@@ -8,6 +8,16 @@ import Header from "./components/Header";
 import CartDetails from "./components/CartDetails";
 import Styled from "styled-components";
 
+// import { getParts } from "./state/actions/partActions";
+
+import { connect, useDispatch, useSelector } from "react-redux";
+import {
+  LOADING,
+  PART_SUCCESS,
+  ERROR,
+  getParts,
+} from "./state/actions/partActions";
+
 //styling
 const AllContainer = Styled.div`
 display: flex;
@@ -17,14 +27,21 @@ background: linear-gradient(21deg, rgba(115,226,15,0.7931547619047619) 2%, rgba(
 height:100vh;
 `;
 
-function App() {
-  const [parts, setParts] = useState([]);
+function App(props) {
+  console.log(props);
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.partReducer.loading);
+  // const { parts } = props;
+  // const [parts, setParts] = useState([]);
   const [cart, setCart] = useState({ items: [], total: 0 });
   useEffect(() => {
-    axios.get("http://localhost:5000/products").then((res) => {
-      console.log(res);
-      setParts(res.data);
-    });
+    // dispatch({ type: LOADING });
+    // axios.get("http://localhost:5000/products").then((res) => {
+    //   console.log(res);
+    //   dispatch({ type: PART_SUCCESS, payload: res.data });
+    // });
+    getParts(dispatch);
+    // props.getParts();
   }, []);
 
   const cartRemove = (id, name) => {
@@ -53,15 +70,15 @@ function App() {
 
   return (
     <Router>
+      {loading && <h1>LOADING....</h1>}
       <Header cart={cart} />
       <AllContainer>
         <div className="App">
           <Route exact path="/">
-            <StoreContainer parts={parts} />
+            <StoreContainer />
           </Route>
           <Route exact path="/category/:id">
             <CategoryContainer
-              parts={parts}
               cartRemove={cartRemove}
               cartAdd={cartAdd}
               cart={cart}
@@ -79,5 +96,12 @@ function App() {
     </Router>
   );
 }
+
+// const mapStateToProps = (state) => {
+//   return {
+//     // parts: state.partReducer.parts,
+//     loading: state.partReducer.loading,
+//   };
+// };
 
 export default App;

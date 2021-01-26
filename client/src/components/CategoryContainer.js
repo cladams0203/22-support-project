@@ -4,6 +4,8 @@ import PartsCard from "./PartsCard";
 import Styled from "styled-components";
 // import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
+import { connect } from "react-redux";
+
 const CategoryDiv = Styled.div`
 margin-top: 5%;
 display:flex;
@@ -20,7 +22,7 @@ background-color: white;
 border-radius: 25px;
 `;
 
-export default function CategoryContainer(props) {
+function CategoryContainer(props) {
   const { id } = useParams();
   // const match = useRouteMatch();
 
@@ -72,3 +74,9 @@ export default function CategoryContainer(props) {
     </CategoryDiv>
   );
 }
+
+export default connect((state) => {
+  return {
+    parts: state.partReducer.parts,
+  };
+})(CategoryContainer);

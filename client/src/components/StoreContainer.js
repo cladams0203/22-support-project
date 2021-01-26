@@ -4,6 +4,8 @@ import StoreCategory from "./StoreCategory";
 import Styled from "styled-components";
 import Video from "../media/Technology.mp4";
 
+import { connect, useSelector } from "react-redux";
+
 //Styling
 const VideoBackground = Styled.div`
 display: flex;
@@ -38,10 +40,11 @@ const colors = [
   "rgba(127, 167, 235, 0.67)",
 ];
 
-export default function StoreContainer(props) {
+function StoreContainer() {
+  const parts = useSelector((state) => state.partReducer.parts);
   const categories = [];
-  for (let obj in props.parts) {
-    categories.push({ name: obj, image: props.parts[obj][0].url });
+  for (let obj in parts) {
+    categories.push({ name: obj, image: parts[obj][0].url });
   }
   console.log(categories);
   return (
@@ -68,3 +71,5 @@ export default function StoreContainer(props) {
     </VideoBackground>
   );
 }
+
+export default StoreContainer;
